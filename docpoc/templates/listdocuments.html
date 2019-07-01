@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script>
+  alert('in script tag');
+  var currentloggedinuser;
+  var app_firebase;
+    // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAqh2TXUWJ_vAKihHXLI5gHmc951Mptv_0",
+    authDomain: "qwiklabs-gcp-7187ca9364b7d684.firebaseapp.com",
+    databaseURL: "https://qwiklabs-gcp-7187ca9364b7d684.firebaseio.com",
+    projectId: "qwiklabs-gcp-7187ca9364b7d684",
+    storageBucket: "",
+    messagingSenderId: "420489914210",
+    appId: "1:420489914210:web:de1f51d3ece59ba0"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  app_firebase = firebase;
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      alert('this is the user');
+      alert(user.displayName);
+        currentloggedinuser = user.displayName;
+        alert(currentloggedinuser);
+        if(currentloggedinuser == 'abc') {
+          document.getElementById('loggedinuser').style.display = 'inline';
+        }
+        if(currentloggedinuser == 'asdf'){
+          document.getElementById('loggedinuser1').style.display='inline';
+        }
+    } else {
+    //  alert('no user signed in');
+      window.location.replace('/');
+  }});
+</script>
+<h3>Documents</h3>
+<a href="/add" class="btn btn-success btn-sm">
+  <i class="glyphicon glyphicon-plus"></i>
+  Add Document
+</a>
+<span id='loggedinuser' style="display: none">
+
+{% for doc in documents %}
+ {% if doc.to_dict().get('username') == 'abc' %}
+<div class="media">
+   <a href="/documents/{{doc.to_dict().get('id')}}">
+    <div class="media-left">
+      {% if doc.to_dict().get('imageUrl') %}
+        <img src="{{doc.to_dict().get(imageUrl)}}">
+      {% else %}
+        <img src="http://placekitten.com/g/128/192">
+      {% endif %}
+    </div>
+    <div class="media-body">
+      <h4>{{doc.to_dict().get('region')}}</h4>
+      <h4>{{doc.to_dict().get('country')}}</h4>
+      <h4>{{doc.to_dict().get('entity')}}</h4>
+    </div>
+  </a>
+  <a href="{{doc.to_dict().get('imageUrl')}}">
+    <div>
+      <h4>{{doc.to_dict().get('imageUrl')}}</h4>
+    </div>
+  </a>
+</div>
+{% endif %}
+{% else %}
+<p>No documents found</p>
+{% endfor %}
+</span>
+
+<span id='loggedinuser1' style="display: none">
+{% for doc in documents %}
+ {% if doc.to_dict().get('username') == 'abc' %}
+<div class="media">
+   <a href="/documents/{{doc.to_dict().get('id')}}">
+    <div class="media-left">
+      {% if doc.to_dict().get('imageUrl') %}
+        <img src="{{doc.to_dict().get(imageUrl)}}">
+      {% else %}
+        <img src="http://placekitten.com/g/128/192">
+      {% endif %}
+    </div>
+    <div class="media-body">
+      <h4>{{doc.to_dict().get('region')}}</h4>
+      <h4>{{doc.to_dict().get('country')}}</h4>
+      <h4>{{doc.to_dict().get('entity')}}</h4>
+    </div>
+  </a>
+  <a href="{{doc.to_dict().get('imageUrl')}}">
+    <div>
+      <h4>{{doc.to_dict().get('imageUrl')}}</h4>
+    </div>
+  </a>
+</div>
+{% endif %}
+{% else %}
+<p>No documents found here</p>
+{% endfor %}
+</span>
+{% if next_page_token %}
+<nav>
+  <ul class="pager">
+    <li><a href="?page_token={{next_page_token}}">More</a></li>
+  </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

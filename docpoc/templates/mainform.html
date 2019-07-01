@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+  alert('in script tag');
+  var app_firebase
+    // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAqh2TXUWJ_vAKihHXLI5gHmc951Mptv_0",
+    authDomain: "qwiklabs-gcp-7187ca9364b7d684.firebaseapp.com",
+    databaseURL: "https://qwiklabs-gcp-7187ca9364b7d684.firebaseio.com",
+    projectId: "qwiklabs-gcp-7187ca9364b7d684",
+    storageBucket: "",
+    messagingSenderId: "420489914210",
+    appId: "1:420489914210:web:de1f51d3ece59ba0"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  app_firebase = firebase;
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+    //  alert('this is the user');
+    //  alert(user.displayName);
+    //  continue;
+    } else {
+    //  alert('no user signed in');
+      window.location.replace('/');
+  }});
+</script>
+<h3>{{action}} doc</h3>
+
+<form method="POST" enctype="multipart/form-data">
+
+  <div class="form-group">
+    <label for="region">Region</label>
+    <input type="text" name="region" id="region" value="{{doc.region}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="country">Country</label>
+    <input type="text" name="country" id="country" value="{{doc.country}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="entity">Entity</label>
+    <input type="text" name="entity" id="entity" value="{{doc.entity}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="department">Department</label>
+    <input type="text" name="department" id="department" value="{{doc.department}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="image">Upload Document</label>
+    <input type="file" name="image" id="image" class="form-control"/>
+  </div>
+
+  <div class="form-group hidden">
+    <label for="imageUrl">Uploaded Document URL</label>
+    <input type="text" name="imageUrl" id="imageUrl" value="{{doc.imageUrl}}" class="form-control"/>
+  </div>
+
+  <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+{% endblock %}

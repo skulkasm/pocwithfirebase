@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Documents</h3>
+
+<div class="btn-group">
+  <a class="btn btn-primary btn-sm">
+    <i class="glyphicon glyphicon-edit"></i>
+    Edit document
+  </a>
+  <a class="btn btn-danger btn-sm">
+    <i class="glyphicon glyphicon-trash"></i>
+    Delete document
+  </a>
+</div>
+
+<div class="media">
+
+  <div class="media-left">
+    {% if doc.to_dict().get('imageUrl') %}
+      <img class="doc-image" src="{{doc.to_dict().get('imageUrl')}}">
+    {% else %}
+      <img class="doc-image" src="">
+    {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}
