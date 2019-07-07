@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script>
+  alert('in script tag');
+  var currentloggedinuser;
+  var app_firebase;
+    // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyC3jcAuCaK7F4CNP2OwyxQHNPGOzIabDec",
+    authDomain: "qwiklabs-gcp-4a3e0d663f8c01da.firebaseapp.com",
+    databaseURL: "https://qwiklabs-gcp-4a3e0d663f8c01da.firebaseio.com",
+    projectId: "qwiklabs-gcp-4a3e0d663f8c01da",
+    storageBucket: "",
+    messagingSenderId: "67709050866",
+    appId: "1:67709050866:web:2bf0efc93c0691ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  app_firebase = firebase;
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      alert('this is the user');
+      alert(user.displayName);
+        currentloggedinuser = user.displayName;
+        alert(currentloggedinuser);
+        if(currentloggedinuser == 'abc') {
+          document.getElementById('loggedinuser').style.display = 'inline';
+        }
+        if(currentloggedinuser == 'asdf'){
+          document.getElementById('loggedinuser1').style.display='inline';
+        }
+    } else {
+    //  alert('no user signed in');
+      window.location.replace('/');
+  }});
+</script>
+
+<h3>Documents</h3>
+<a href="/add" class="btn btn-success btn-sm">
+  <i class="glyphicon glyphicon-plus"></i>
+  Add Document
+</a>
+<a href="/search" class="btn btn-success btn-sm">
+  <i class="glyphicon glyphicon-plus"></i>
+  Search Document
+</a>
+
+<p>This block defines documents</p>
+{% for doc in documents %}
+      <h4>{{doc.to_dict().get('region')}}</h4>
+      <h4>{{doc.to_dict().get('country')}}</h4>
+      <h4>{{doc.to_dict().get('entity')}}</h4>
+{% else %}
+<p>No documents found here</p>
+{% endfor %}
+
+
+{% endblock %}
