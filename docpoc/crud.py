@@ -39,19 +39,15 @@ def list():
     #db = firebase.database()
 
     docs = db.collection(u'kycdocs').get()
-    print (docs)
+    for doc in docs:
+        print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
     documents = docs
 
     return render_template(
         "listdocuments.html",
         documents=documents
        )
-
-
-@crud.route('/<id>')
-def view():
-    #doc = get_model().read(id)
-    return render_template("view.html")
 
 
 @crud.route('/add', methods=['GET', 'POST'])
@@ -71,3 +67,30 @@ def add():
 
     return render_template("mainform.html", action="Add", doc={})
 
+
+@crud.route('/search', methods=['GET','POST'])
+def search():
+    if request.method == 'POST':
+        db = firestore.Client()
+        region = request.form['region']
+        country = request.form['country']
+
+        return redirect(url_for('.searchresults', region=region, country=country))
+
+    return render_template("search.html")
+
+
+@crud.route('/searchresults')
+def searchresults():
+    db = firestore.Client()
+    print('in search results function')
+    region = request.args.get('region')
+    print(region)
+    country = request.args.get('country')
+    print(country)
+    qry = db.collection(u'kycdocs').where(u'region', u'==', region)
+    documents = qry.get()
+    for doc in documents:
+        print(u'{} => {}'.format(doc.id, doc.to_dict()))
+
+    return render_template("searchresults.html", documents=documents)

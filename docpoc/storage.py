@@ -31,5 +31,19 @@ def upload_file(file_stream, filename, content_type):
     if isinstance(url, six.binary_type):
         url = url.decode('utf-8')
 
+    print('file uploaded successfully')
+    print(url)
+
+    for entry in blob.acl:
+        print('{}: {}'.format(entry['role'], entry['entity']))
+
+    bucket.default_object_acl.user('allUsers').revoke_read()
+    blob.acl.group('allUsers').revoke_read()
+    blob.acl.user("abc@pqr.com").grant_read()
+    blob.acl.user("asdf@qwe.com").grant_owner()
+    blob.acl.save()
+    print('after update of acl')
+    for entry in blob.acl:
+        print('{}: {}'.format(entry['role'], entry['entity']))
     return url
 # [END upload_file]
