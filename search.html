@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script>
+  alert('in script tag');
+  var currentloggedinuser;
+  var app_firebase;
+    // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyC3jcAuCaK7F4CNP2OwyxQHNPGOzIabDec",
+    authDomain: "qwiklabs-gcp-4a3e0d663f8c01da.firebaseapp.com",
+    databaseURL: "https://qwiklabs-gcp-4a3e0d663f8c01da.firebaseio.com",
+    projectId: "qwiklabs-gcp-4a3e0d663f8c01da",
+    storageBucket: "",
+    messagingSenderId: "67709050866",
+    appId: "1:67709050866:web:2bf0efc93c0691ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  app_firebase = firebase;
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      alert('this is the user');
+      alert(user.displayName);
+        currentloggedinuser = user.displayName;
+        alert(currentloggedinuser);
+        if(currentloggedinuser == 'abc') {
+          document.getElementById('loggedinuser').style.display = 'inline';
+        }
+        if(currentloggedinuser == 'asdf'){
+          document.getElementById('loggedinuser1').style.display='inline';
+        }
+    } else {
+    //  alert('no user signed in');
+      window.location.replace('/');
+  }});
+</script>
+
+
+<form method="POST" enctype="multipart/form-data">
+
+  <div class="form-group">
+    <label for="region">Region</label>
+    <input type="text" name="region" id="region" value="" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="country">Country</label>
+    <input type="text" name="country" id="country" value="" class="form-control"/>
+  </div>
+
+      <button type="submit" class="btn btn-success">Search</button>
+</form>
+
+{% endblock %}
